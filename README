@@ -1,0 +1,10 @@
+1. create a shared preferences
+	> when the user first "registers" (name and imei are stored in firebase) the registration preference value is set to true
+		- store user's name in sharedpreferences
+	> the MainActivity will always check this value first; if false, redirect to login
+
+
+POSSIBLE FEATURES:
+-----------------------------------
+- add multiple rooms
+- make each registered person a specific object6
