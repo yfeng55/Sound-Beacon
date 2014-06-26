@@ -76,8 +76,7 @@ public class MainActivity extends Activity{
 		editor.commit();
 		
 		//display logged-in layout
-		
-	}
+		}
 	
 	
 }
