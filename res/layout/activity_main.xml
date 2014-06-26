@@ -3,24 +3,58 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/TextView01"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name:" />
-
-    <EditText
-        android:id="@+id/et_name"
+    <LinearLayout
+        android:id="@+id/registerLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="15"
-        android:inputType="" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible" >
 
-    <Button
-        android:id="@+id/b_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="register"
-        android:text="Register" />
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name:" />
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:inputType="" />
+
+        <Button
+            android:id="@+id/b_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="register"
+            android:text="Register" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/applicationLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="name: " />
+
+        <TextView
+            android:id="@+id/tv_deviceID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="devID: " />
+
+        <TextView
+            android:id="@+id/tv_songID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="songID: " />
+    </LinearLayout>
 
 </LinearLayout>

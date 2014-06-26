@@ -1,5 +1,6 @@
 package com.example.songbeacon;
 
+import android.content.Context;
 import android.telephony.TelephonyManager;
 
 public class User 
@@ -7,20 +8,26 @@ public class User
 	private String name;
 	private String deviceID;
 	private String songID;
-	private TelephonyManager tMan;
+	
 	
 	public User()
 	{
 		name = "";
-		deviceID = tMan.getDeviceId();
+		deviceID = "";
 		songID = "";
 	}
 	
 	public User(String name)
 	{
 		this.name = name;
-		deviceID = tMan.getDeviceId();
-		songID = "";
+		this.deviceID = "";
+		this.songID = "";
+	}
+	public User(String name, String deviceID)
+	{
+		this.name = name;
+		this.deviceID = deviceID;
+		this.songID = "";
 	}
 
 	public void setName(String newName){
