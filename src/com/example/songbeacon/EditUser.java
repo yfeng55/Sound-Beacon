@@ -15,13 +15,15 @@ public class EditUser extends Activity{
 	TextView namefield;
 	EditText songfield;
 	Button savechanges;
+	User selecteduser;
+	String song_id;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		Intent i = getIntent();
-		User u = (User) i.getSerializableExtra("selecteduser");
+		selecteduser = (User) i.getSerializableExtra("selecteduser");
 		
 		setContentView(R.layout.edituser);
 		
@@ -30,18 +32,18 @@ public class EditUser extends Activity{
 		savechanges = (Button) findViewById(R.id.b_savechanges);
 		
 		//set form fields to the user's attribute values
-		namefield.setText(u.getName());
-		songfield.setText(u.getSongID());
+		namefield.setText(selecteduser.getName());
+		songfield.setText(selecteduser.getSongID());
 	}
 	
 	
 	
 	
 	public void writeToFirebase(View v){
+		song_id = songfield.getText().toString();
 		
-		Firebase ref = new Firebase("https://resplendent-fire-3957.firebaseio.com/");
-		
-		Firebase userref = ref.child("");
+		Firebase ref = new Firebase("https://resplendent-fire-3957.firebaseio.com/" + selecteduser.getName());
+		ref.child("songID").setValue(song_id);
 	}
 	
 	

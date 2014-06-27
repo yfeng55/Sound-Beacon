@@ -89,7 +89,7 @@ public class MainActivity extends Activity{
 		TelephonyManager tMan = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 		bigbootyuser = new User(name, tMan.getDeviceId());
 		
-		Firebase newpushref = ref.push();
+		Firebase newpushref = new Firebase("https://resplendent-fire-3957.firebaseio.com/" + name);
 		newpushref.setValue(bigbootyuser);
 		
 		

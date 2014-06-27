@@ -6,15 +6,17 @@
 
 2. create an EditUser activity to modify users' attributes ***
 	> start the EditUser activity from the UserList Activity ***
-		- pass the id and attributes of the user that was selected
-		- prepopulate the EditUser form with the passed attributes
-		- have the form modify user attributes in firebase
+		- prepopulate the EditUser form with the passed attributes ***
+		- have the form modify user attributes in firebase ***
 
+
+3. trigger the MediaPlayer to play a song when in range of the beacon
+	
 
 
 
 POSSIBLE FEATURES:
 -----------------------------------
+- select songs from soundcloud
 - add multiple rooms
 - strobe lights
-- select songs from soundcloud
