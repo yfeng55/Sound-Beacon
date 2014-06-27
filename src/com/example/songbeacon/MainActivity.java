@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.firebase.client.Firebase;
 
 
@@ -53,6 +54,7 @@ public class MainActivity extends Activity{
 			
 			//if logged in, then start the UserList activity
 			Intent i = new Intent(this, UserList.class);
+	        i.putExtra(UserList.EXTRAS_TARGET_ACTIVITY, UserList.class.getName());
 			startActivity(i);
 		}
 		
