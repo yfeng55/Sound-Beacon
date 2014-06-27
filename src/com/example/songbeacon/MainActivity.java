@@ -1,6 +1,7 @@
 package com.example.songbeacon;
-import java.util.ArrayList;
 import java.util.List;
+
+import com.firebase.client.Firebase;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,38 +9,28 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.os.Message;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 
 
 public class MainActivity extends Activity{
-	
-	private Firebase ref = new Firebase("https://resplendent-fire-3957.firebaseio.com/");
-	
+		
 	//views for register layout
 	View registerLayout;
 	EditText namefield;
 	Button registerbutton;
 	SharedPreferences prefs;
-	User bigbootyuser;
 	
 	//views for application layout
 	View applicationLayout;
 	TextView name, deviceID, songID;
-
-	List <User> userList;
 	
+	User bigbootyuser;
+	List <User> userList;
 	
 	
 	@Override
@@ -68,8 +59,11 @@ public class MainActivity extends Activity{
 			
 		}
 		
+		///////////////////////////////////////////////////////////////////////////////////
+		
+		
+		
 	}
-
 
 	
 	@Override
@@ -78,7 +72,6 @@ public class MainActivity extends Activity{
 		finish();
 	}
 
-	
 
 	public void register(View v){
 		//get a reference to the FireBase root
@@ -91,7 +84,6 @@ public class MainActivity extends Activity{
 		
 		Firebase newpushref = new Firebase("https://resplendent-fire-3957.firebaseio.com/" + name);
 		newpushref.setValue(bigbootyuser);
-		
 		
 		//create a new editor for the prefs object
 		Editor editor = prefs.edit();
@@ -106,7 +98,6 @@ public class MainActivity extends Activity{
 		//after registering, start the UserList activity
 		Intent i = new Intent(this, UserList.class);
 		startActivity(i);
-		
 		
 	}
 	
