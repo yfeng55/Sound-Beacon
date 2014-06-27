@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -122,24 +123,62 @@ public class MainActivity extends Activity{
 		applicationLayout.setVisibility(View.VISIBLE);
 		}
 	
+	/**
+	 * sets firebase event listener - for when changes are made in firebase (will also go through onChildAdded 
+	 * for every value in firebase when this listener is first set
+	 */
 	protected void setFirebaseEventListener()
 	{
+		/**
+		 * methods for when an action to a child in firebase
+		 */
 		ref.addChildEventListener(new ChildEventListener() {
 		  @Override
 		  public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
-		    User m = snapshot.getValue(User.class);
-		    Log.d("child event listener", m.getName() + " - song " + m.getSongID());
-		    name.setText("name - " + m.getName());
-		    userList.add(m);
+		    User changedUser = snapshot.getValue(User.class);
+		    Log.d("child event listener", changedUser.getName() + " - song " + changedUser.getSongID() + " prevChildName - " + previousChildName);
+		    userList.add(changedUser);
 		  }
 
-		  @Override public void onChildChanged(DataSnapshot snapshot, String previousChildName) { }
+		  @Override public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
+			  User changedUser = snapshot.getValue(User.class);
+			  /**
+			  TODO:test
+			  int index = userList.indexOf(changedUser);
+			  userList.set(index, changedUser);
+			  */
+			  for(int ind = 0; ind < userList.size(); ind++)
+			  {
+				  //search for matching name to user in userList
+				  if(changedUser.getName() == userList.get(ind).getName())
+				  {
+					  //change user in local userList that had info changed in firebase
+					  userList.set(ind, changedUser);
+					  break;
+				  }
+			  }
+		  }
 
-		  @Override public void onChildRemoved(DataSnapshot snapshot) { }
+		  @Override public void onChildRemoved(DataSnapshot snapshot) { 
+			  User changedUser = snapshot.getValue(User.class);
+			  userList.remove(changedUser);
 
-		  @Override public void onChildMoved(DataSnapshot snapshot, String previousChildName) { }
+		  }
+		  /**
+		   * not sure how this will be useful for hackathon - leaving blank now
+		   */
+		  @Override public void onChildMoved(DataSnapshot snapshot, String previousChildName) { 
+			  /*
+			  User changedUser = snapshot.getValue(User.class);
+			  int newIndex = snapshot.
+			  int index = userList.indexOf(changedUser);
+			  userList.set(index, changedUser);
+			  */
+		  }
 
-		  @Override public void onCancelled(FirebaseError error) { }
+		  @Override public void onCancelled(FirebaseError error) { 
+			  Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_LONG).show();
+		  }
 		});
 	}
 	
