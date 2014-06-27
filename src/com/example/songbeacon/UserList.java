@@ -1,52 +1,54 @@
 package com.example.songbeacon;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
 import android.app.ListActivity;
-import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.estimote.sdk.Beacon;
-import com.estimote.sdk.BeaconManager;
-import com.estimote.sdk.Region;
-
-import static com.estimote.sdk.BeaconManager.MonitoringListener;
+import com.firebase.client.ValueEventListener;
 
 
 public class UserList extends ListActivity {
 
 	public static final String beaconOneID = "55555";
 	public Beacon assignedBeacon;
-	
-	  public static final String EXTRAS_TARGET_ACTIVITY = "extrasTargetActivity";
-	  public static final String EXTRAS_BEACON = "extrasBeacon";
-	  
-	  private static final int REQUEST_ENABLE_BT = 1234;
-	  private static final Region ALL_ESTIMOTE_BEACONS_REGION = new Region("rid", null, null, null);
-	
+
+	public static final String EXTRAS_TARGET_ACTIVITY = "extrasTargetActivity";
+	public static final String EXTRAS_BEACON = "extrasBeacon";
+
+	private static final int REQUEST_ENABLE_BT = 1234;
+	private static final Region ALL_ESTIMOTE_BEACONS_REGION = new Region("rid",
+			null, null, null);
+
 	private ArrayList<User> users = new ArrayList<User>();
 	private ArrayList<String> usernames = new ArrayList<String>();
-	
-	  private BeaconManager beaconManager;
 
+	private BeaconManager beaconManager;
 	
+	MediaPlayer mp;
+	boolean isplaying = false;
+	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+	String songselection;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,6 +71,9 @@ public class UserList extends ListActivity {
 				}
 
 				setListAdapter(new ArrayAdapter<String>(UserList.this, android.R.layout.simple_list_item_1, usernames));
+				
+				
+				
 			}
 
 			//we're not using this stuff currently
@@ -82,6 +87,27 @@ public class UserList extends ListActivity {
 			public void onCancelled(FirebaseError error) {}
 			
 		});
+		
+		//get the firebase songselection for this device
+		String username = prefs.getString("name", "");
+		Firebase thisuserref = new Firebase("https://resplendent-fire-3957.firebaseio.com/" + username + "/songID");
+		
+		thisuserref.addValueEventListener(new ValueEventListener() {
+		  @Override
+		  public void onDataChange(DataSnapshot snapshot) {
+			  //get the songselection for this user
+			  songselection = snapshot.getValue().toString();
+		  }
+
+		  @Override
+		  public void onCancelled(FirebaseError error) {
+			  System.err.println("Listener was cancelled");
+		  }
+		});
+		
+		
+		
+		
 
 		setListAdapter(new ArrayAdapter<String>(UserList.this,android.R.layout.simple_list_item_1, usernames));
 
@@ -105,6 +131,9 @@ public class UserList extends ListActivity {
 	            	{
 	            	
 	            		Log.d("my beacon", "my beacon");
+	            		mp = MediaPlayer.create(UserList.this, R.raw.td4w);
+			        	mp.setLooping(true);
+			        	mp.start();
 	            	}
 	            }
 	          }
