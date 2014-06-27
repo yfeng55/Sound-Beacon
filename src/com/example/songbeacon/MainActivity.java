@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -24,8 +25,7 @@ import com.firebase.client.FirebaseError;
 
 public class MainActivity extends Activity{
 	
-	private String firebaseHost = "https://resplendent-fire-3957.firebaseio.com/";
-	private Firebase ref;
+	private Firebase ref = new Firebase("https://resplendent-fire-3957.firebaseio.com/");
 	
 	//views for register layout
 	View registerLayout;
@@ -40,17 +40,14 @@ public class MainActivity extends Activity{
 
 	List <User> userList;
 	
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_main);
-		
-		ref = new Firebase(firebaseHost);
-		setFirebaseEventListener();
-		
-		userList = new ArrayList<User>();
-		
+						
 		registerLayout = findViewById(R.id.registerLayout);
 		namefield = (EditText) findViewById(R.id.et_name);
 		registerbutton = (Button) findViewById(R.id.b_register);
@@ -67,7 +64,7 @@ public class MainActivity extends Activity{
 		if(prefs.getBoolean("authtoken", false) == false){
 			
 			Log.i("EEE", "not logged in - the authtoken is false");
-						
+			
 			registerLayout.setVisibility(View.VISIBLE);
 			applicationLayout.setVisibility(View.GONE);
 			
@@ -76,21 +73,12 @@ public class MainActivity extends Activity{
 			
 		}else{
 			Log.i("EEE", "logged in - the authtoken is true");
-			registerLayout.setVisibility(View.GONE);
-			applicationLayout.setVisibility(View.VISIBLE);
+			
+			//if logged in, then start the UserList activity
+			Intent i = new Intent(this, UserList.class);
+			startActivity(i);
 		}
 		
-		
-		/*Firebase ref = new Firebase("https://resplendent-fire-3957.firebaseio.com/");
-		ref.addValueEventListener(new ValueEventListener() {
-			
-			@Override
-			public void onDataChange(DataSnapshot arg0) { }
-			
-			@Override
-			public void onCancelled(FirebaseError arg0) { }
-		
-		});*/
 		
 	}
 	
@@ -117,75 +105,14 @@ public class MainActivity extends Activity{
 		editor.putString("songID", bigbootyuser.getSongID());
 		editor.commit();
 		
-		
-		//display logged-in layout
-		registerLayout.setVisibility(View.GONE);
-		applicationLayout.setVisibility(View.VISIBLE);
-		}
-	
-	/**
-	 * sets firebase event listener - for when changes are made in firebase (will also go through onChildAdded 
-	 * for every value in firebase when this listener is first set
-	 */
-	protected void setFirebaseEventListener()
-	{
-		/**
-		 * methods for when an action to a child in firebase
-		 */
-		ref.addChildEventListener(new ChildEventListener() {
-		  @Override
-		  public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
-		    User changedUser = snapshot.getValue(User.class);
-		    Log.d("child event listener", changedUser.getName() + " - song " + changedUser.getSongID() + " prevChildName - " + previousChildName);
-		    userList.add(changedUser);
-		  }
-
-		  @Override public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
-			  User changedUser = snapshot.getValue(User.class);
-			  /**
-			  TODO:test
-			  int index = userList.indexOf(changedUser);
-			  userList.set(index, changedUser);
-			  */
-			  for(int ind = 0; ind < userList.size(); ind++)
-			  {
-				  //search for matching name to user in userList
-				  if(changedUser.getName() == userList.get(ind).getName())
-				  {
-					  //change user in local userList that had info changed in firebase
-					  userList.set(ind, changedUser);
-					  break;
-				  }
-			  }
-		  }
-
-		  @Override public void onChildRemoved(DataSnapshot snapshot) { 
-			  User changedUser = snapshot.getValue(User.class);
-			  userList.remove(changedUser);
-
-		  }
-		  /**
-		   * not sure how this will be useful for hackathon - leaving blank now
-		   */
-		  @Override public void onChildMoved(DataSnapshot snapshot, String previousChildName) { 
-			  /*
-			  User changedUser = snapshot.getValue(User.class);
-			  int newIndex = snapshot.
-			  int index = userList.indexOf(changedUser);
-			  userList.set(index, changedUser);
-			  */
-		  }
-
-		  @Override public void onCancelled(FirebaseError error) { 
-			  Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_LONG).show();
-		  }
-		});
-	}
-	
-	protected void traverseFirebaseForValues()
-	{
+		//after registering, start the UserList activity
+		Intent i = new Intent(this, UserList.class);
+		startActivity(i);
 		
 	}
+	
+	
+
 	
 }
 
