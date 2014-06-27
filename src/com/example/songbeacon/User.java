@@ -8,6 +8,7 @@ public class User
 	private String name;
 	private String deviceID;
 	private String songID;
+	private String beaconID;
 	
 	
 	public User()
@@ -15,6 +16,7 @@ public class User
 		name = "";
 		deviceID = "";
 		songID = "";
+		beaconID = "";
 	}
 	
 	public User(String name)
@@ -22,14 +24,19 @@ public class User
 		this.name = name;
 		this.deviceID = "";
 		this.songID = "";
+		this.beaconID = "";
 	}
 	public User(String name, String deviceID)
 	{
 		this.name = name;
 		this.deviceID = deviceID;
 		this.songID = "";
+		this.beaconID = "";
 	}
 
+	/**
+	 * SETTERS
+	 */
 	public void setName(String newName){
 		this.name = newName;
 	}
@@ -39,9 +46,11 @@ public class User
 	public void setSongID(String newSongID){
 		this.songID = newSongID;
 	}
-	
+	public void setBeaconID(String newBeaconID){
+		this.beaconID = newBeaconID;
+	}	
 	/**
-	 *	Getters 
+	 *	GETTERS
 	 */
 	public String getName()
 	{
@@ -54,5 +63,9 @@ public class User
 	public String getSongID()
 	{
 		return songID;
+	}
+	public String getBeaconID()
+	{
+		return beaconID;
 	}
 }
