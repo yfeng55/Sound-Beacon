@@ -2,6 +2,7 @@ package com.example.songbeacon;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,23 +11,29 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.estimote.sdk.BeaconManager;
+import com.estimote.sdk.Region;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+
+import com.estimote.sdk.Beacon;
+import com.estimote.sdk.BeaconManager;
+import com.estimote.sdk.Region;
+
+import static com.estimote.sdk.BeaconManager.MonitoringListener;
 
 
 public class UserList extends ListActivity {
 
 	private ArrayList<User> users = new ArrayList<User>();
 	private ArrayList<String> usernames = new ArrayList<String>();
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		Log.i("EEE", "In the listactivity");
-
+	    
 		// store all firebase users into the users[] array
 		Firebase ref = new Firebase("https://resplendent-fire-3957.firebaseio.com/");
 

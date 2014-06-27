@@ -1,8 +1,6 @@
 package com.example.songbeacon;
 import java.util.List;
 
-import com.firebase.client.Firebase;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.firebase.client.Firebase;
 
 
 public class MainActivity extends Activity{
@@ -49,19 +48,13 @@ public class MainActivity extends Activity{
 			registerLayout = findViewById(R.id.registerLayout);
 			namefield = (EditText) findViewById(R.id.et_name);
 			registerbutton = (Button) findViewById(R.id.b_register);
-			
 		}else{
 			Log.i("EEE", "logged in - the authtoken is true");
 			
 			//if logged in, then start the UserList activity
 			Intent i = new Intent(this, UserList.class);
 			startActivity(i);
-			
 		}
-		
-		///////////////////////////////////////////////////////////////////////////////////
-		
-		
 		
 	}
 
@@ -101,9 +94,6 @@ public class MainActivity extends Activity{
 		
 	}
 	
-	
-	
-
 	
 }
 
