@@ -59,14 +59,6 @@ public class MainActivity extends Activity{
 			namefield = (EditText) findViewById(R.id.et_name);
 			registerbutton = (Button) findViewById(R.id.b_register);
 			
-			applicationLayout = findViewById(R.id.applicationLayout);
-			name = (TextView)findViewById(R.id.tv_name);
-			deviceID = (TextView)findViewById(R.id.tv_deviceID);
-			songID = (TextView)findViewById(R.id.tv_songID);
-			
-			registerLayout.setVisibility(View.VISIBLE);
-			applicationLayout.setVisibility(View.GONE);
-			
 		}else{
 			Log.i("EEE", "logged in - the authtoken is true");
 			
@@ -76,12 +68,10 @@ public class MainActivity extends Activity{
 			
 		}
 		
-		
 	}
 
+
 	
-
-
 	@Override
 	protected void onPause() {
 		super.onPause();

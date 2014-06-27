@@ -4,8 +4,11 @@
 	> the MainActivity will always check this value first; if false, redirect to login ***
 
 
-2. create a "edit user" screen to modify users' attributes
-	> 
+2. create an EditUser activity to modify users' attributes ***
+	> start the EditUser activity from the UserList Activity ***
+		- pass the id and attributes of the user that was selected
+		- prepopulate the EditUser form with the passed attributes
+		- have the form modify user attributes in firebase
 
 
 

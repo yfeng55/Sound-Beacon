@@ -1,9 +1,11 @@
 package com.example.songbeacon;
 
+import java.io.Serializable;
+
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
-public class User 
+public class User implements Serializable
 {
 	private String name;
 	private String deviceID;

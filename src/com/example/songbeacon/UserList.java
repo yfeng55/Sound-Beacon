@@ -2,11 +2,13 @@ package com.example.songbeacon;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -14,54 +16,69 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
 
-public class UserList extends ListActivity{
+public class UserList extends ListActivity {
 
-	//string array of users
-	private ArrayList<String> users = new ArrayList<String>();
-	
+	private ArrayList<User> users = new ArrayList<User>();
+	private ArrayList<String> usernames = new ArrayList<String>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		Log.i("EEE", "In the listactivity");
-		
-		//store all firebase users into the users[] array
+
+		// store all firebase users into the users[] array
 		Firebase ref = new Firebase("https://resplendent-fire-3957.firebaseio.com/");
+
 		ref.addChildEventListener(new ChildEventListener() {
-		  @Override
-		  public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
-		    
-			  User u = snapshot.getValue(User.class);
-		    
-		    //Log.i("stored user", u.getName());
-		    users.add(u.getName());
-		    
-		    //log all values in users[]
-		    for (String user : users){
-		        Log.i("user added: ", user);
-		    }
-		    
-		    setListAdapter(new ArrayAdapter<String>(UserList.this, android.R.layout.simple_list_item_1, users));
-		  }
-		  
-		  @Override public void onChildChanged(DataSnapshot snapshot, String previousChildName) { }
+			@Override
+			public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
 
-		  @Override public void onChildRemoved(DataSnapshot snapshot) { }
+				User u = snapshot.getValue(User.class);
 
-		  @Override public void onChildMoved(DataSnapshot snapshot, String previousChildName) { }
+				users.add(u);
+				usernames.add(u.getName());
 
-		  @Override public void onCancelled(FirebaseError error) { }
+				// DEBUGGING: log all values in users[]
+				for (User user : users) {
+					Log.i("user added: ", user.getName());
+				}
+
+				setListAdapter(new ArrayAdapter<String>(UserList.this, android.R.layout.simple_list_item_1, usernames));
+			}
+
+			//we're not using this stuff currently
+			@Override
+			public void onChildChanged(DataSnapshot snapshot,String previousChildName) {}
+			@Override
+			public void onChildRemoved(DataSnapshot snapshot) {}
+			@Override
+			public void onChildMoved(DataSnapshot snapshot,String previousChildName) {}
+			@Override
+			public void onCancelled(FirebaseError error) {}
+			
 		});
-		
-		
-		//make menu activity full screen
-		//requestWindowFeature(Window.FEATURE_NO_TITLE);
-		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		
-	    setListAdapter(new ArrayAdapter<String>(UserList.this, android.R.layout.simple_list_item_1, users));
-		
+
+		setListAdapter(new ArrayAdapter<String>(UserList.this,android.R.layout.simple_list_item_1, usernames));
+
 	}
-	
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		
+		super.onListItemClick(l, v, position, id);
+		//Log.i("EEE", "clicked an item");
+
+		Intent i = new Intent(this, EditUser.class);
+
+		// get the user object for the user that was selected in the list
+		User selecteduser = users.get(position);
+
+		// put the selected user object in the newly created intent
+		//i.putExtra("user", selecteduser);
+		
+		i.putExtra("selecteduser", selecteduser);
+		startActivity(i);
+	}
+
 }
-
-
