@@ -30,11 +30,18 @@ public class UserList extends ListActivity{
 		ref.addChildEventListener(new ChildEventListener() {
 		  @Override
 		  public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
-		    User u = snapshot.getValue(User.class);
 		    
-		    Log.i("stored user", u.getName());
+			  User u = snapshot.getValue(User.class);
+		    
+		    //Log.i("stored user", u.getName());
 		    users.add(u.getName());
 		    
+		    //log all values in users[]
+		    for (String user : users){
+		        Log.i("user added: ", user);
+		    }
+		    
+		    setListAdapter(new ArrayAdapter<String>(UserList.this, android.R.layout.simple_list_item_1, users));
 		  }
 		  
 		  @Override public void onChildChanged(DataSnapshot snapshot, String previousChildName) { }
@@ -48,8 +55,8 @@ public class UserList extends ListActivity{
 		
 		
 		//make menu activity full screen
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
 	    setListAdapter(new ArrayAdapter<String>(UserList.this, android.R.layout.simple_list_item_1, users));
 		

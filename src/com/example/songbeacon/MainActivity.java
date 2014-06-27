@@ -46,18 +46,6 @@ public class MainActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.activity_main);
-						
-		registerLayout = findViewById(R.id.registerLayout);
-		namefield = (EditText) findViewById(R.id.et_name);
-		registerbutton = (Button) findViewById(R.id.b_register);
-		
-		applicationLayout = findViewById(R.id.applicationLayout);
-		name = (TextView)findViewById(R.id.tv_name);
-		deviceID = (TextView)findViewById(R.id.tv_deviceID);
-		songID = (TextView)findViewById(R.id.tv_songID);
-		
-		
 		//obtain sharedpreferences
 		prefs = this.getSharedPreferences("com.example.songbeacon", Context.MODE_PRIVATE);
 		
@@ -65,11 +53,19 @@ public class MainActivity extends Activity{
 			
 			Log.i("EEE", "not logged in - the authtoken is false");
 			
+			setContentView(R.layout.activity_main);
+			
+			registerLayout = findViewById(R.id.registerLayout);
+			namefield = (EditText) findViewById(R.id.et_name);
+			registerbutton = (Button) findViewById(R.id.b_register);
+			
+			applicationLayout = findViewById(R.id.applicationLayout);
+			name = (TextView)findViewById(R.id.tv_name);
+			deviceID = (TextView)findViewById(R.id.tv_deviceID);
+			songID = (TextView)findViewById(R.id.tv_songID);
+			
 			registerLayout.setVisibility(View.VISIBLE);
 			applicationLayout.setVisibility(View.GONE);
-			
-			
-			
 			
 		}else{
 			Log.i("EEE", "logged in - the authtoken is true");
@@ -77,11 +73,23 @@ public class MainActivity extends Activity{
 			//if logged in, then start the UserList activity
 			Intent i = new Intent(this, UserList.class);
 			startActivity(i);
+			
 		}
 		
 		
 	}
+
 	
+
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		finish();
+	}
+
+	
+
 	public void register(View v){
 		//get a reference to the FireBase root
 		
@@ -109,7 +117,9 @@ public class MainActivity extends Activity{
 		Intent i = new Intent(this, UserList.class);
 		startActivity(i);
 		
+		
 	}
+	
 	
 	
 
