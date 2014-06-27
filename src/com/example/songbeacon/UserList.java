@@ -5,9 +5,11 @@ import java.util.List;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
@@ -46,7 +48,9 @@ public class UserList extends ListActivity {
 	
 	MediaPlayer mp;
 	boolean isplaying = false;
-	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+	//SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+	
+	SharedPreferences prefs;
 	String songselection;
 
 	@Override
@@ -89,6 +93,7 @@ public class UserList extends ListActivity {
 		});
 		
 		//get the firebase songselection for this device
+		prefs = this.getSharedPreferences("com.example.songbeacon", Context.MODE_PRIVATE);
 		String username = prefs.getString("name", "");
 		Firebase thisuserref = new Firebase("https://resplendent-fire-3957.firebaseio.com/" + username + "/songID");
 		
@@ -96,7 +101,14 @@ public class UserList extends ListActivity {
 		  @Override
 		  public void onDataChange(DataSnapshot snapshot) {
 			  //get the songselection for this user
-			  songselection = snapshot.getValue().toString();
+			  if(snapshot.getValue() != null)
+			  {
+				  songselection = snapshot.getValue().toString();
+			  }
+			  else
+			  {
+				  songselection = "fittycent";
+			  }
 		  }
 
 		  @Override
@@ -131,9 +143,16 @@ public class UserList extends ListActivity {
 	            	{
 	            	
 	            		Log.d("my beacon", "my beacon");
-	            		mp = MediaPlayer.create(UserList.this, R.raw.td4w);
+	            		if(!isplaying)
+	            		{
+	            			//Uri song_uri = Uri.parse("R.raw." + "fittycent");
+	            		Uri song_uri = Uri.parse("android.resource://" +  getPackageName() +  "/raw/" + songselection);
+	            		
+	            		mp = MediaPlayer.create(UserList.this, song_uri);
 			        	mp.setLooping(true);
 			        	mp.start();
+			        	isplaying = true;
+	            		}
 	            	}
 	            }
 	          }
