@@ -12,7 +12,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -76,7 +75,35 @@ public class UserList extends ListActivity {
 
 				setListAdapter(new ArrayAdapter<String>(UserList.this, android.R.layout.simple_list_item_1, usernames));
 				
+				//get the firebase songselection for this device
+				prefs = UserList.this.getSharedPreferences("com.example.songbeacon", Context.MODE_PRIVATE);
+				String username = prefs.getString("name", "");
+				Firebase thisuserref = new Firebase("https://resplendent-fire-3957.firebaseio.com/" + username + "/songID");
 				
+				thisuserref.addValueEventListener(new ValueEventListener() {
+				  @Override
+				  public void onDataChange(DataSnapshot snapshot) {
+					  //get the songselection for this user
+					  if(snapshot.getValue() != null){
+						  songselection = snapshot.getValue().toString();
+						  Log.i("song selection value", songselection);
+						  if(mp != null)
+						  {
+						  mp.stop();
+						  isplaying = false;
+						  }
+					  }
+					  else{
+						  songselection = "fittycent";
+					  }
+				  }
+
+				  @Override
+				  public void onCancelled(FirebaseError error) {
+					  System.err.println("Listener was cancelled");
+				  }
+				});
+				//////////////////////////////////////////////////
 				
 			}
 
@@ -92,30 +119,7 @@ public class UserList extends ListActivity {
 			
 		});
 		
-		//get the firebase songselection for this device
-		prefs = this.getSharedPreferences("com.example.songbeacon", Context.MODE_PRIVATE);
-		String username = prefs.getString("name", "");
-		Firebase thisuserref = new Firebase("https://resplendent-fire-3957.firebaseio.com/" + username + "/songID");
 		
-		thisuserref.addValueEventListener(new ValueEventListener() {
-		  @Override
-		  public void onDataChange(DataSnapshot snapshot) {
-			  //get the songselection for this user
-			  if(snapshot.getValue() != null)
-			  {
-				  songselection = snapshot.getValue().toString();
-			  }
-			  else
-			  {
-				  songselection = "fittycent";
-			  }
-		  }
-
-		  @Override
-		  public void onCancelled(FirebaseError error) {
-			  System.err.println("Listener was cancelled");
-		  }
-		});
 		
 		
 		
@@ -146,12 +150,15 @@ public class UserList extends ListActivity {
 	            		if(!isplaying)
 	            		{
 	            			//Uri song_uri = Uri.parse("R.raw." + "fittycent");
-	            		Uri song_uri = Uri.parse("android.resource://" +  getPackageName() +  "/raw/" + songselection);
+	            		if(songselection != null && !songselection.equals(""))
+	            		{
+	            			Uri song_uri = Uri.parse("android.resource://" +  getPackageName() +  "/raw/" + songselection);
 	            		
-	            		mp = MediaPlayer.create(UserList.this, song_uri);
-			        	mp.setLooping(true);
-			        	mp.start();
-			        	isplaying = true;
+	            			mp = MediaPlayer.create(UserList.this, song_uri);
+	            			mp.setLooping(true);
+	            			mp.start();
+	            			isplaying = true;
+	            		}
 	            		}
 	            	}
 	            }
